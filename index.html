@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo 3D en GitHub Pages</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/three.min.js"></script>
+    <script>
+        // Escena, cámara y renderizador
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Luz
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(1, 1, 1).normalize();
+        scene.add(light);
+
+        // Cargar el modelo 3D
+        const loader = new THREE.GLTFLoader();
+        loader.load(
+            'k.glb', // Nombre del archivo .glb o .gltf
+            function (gltf) {
+                const model = gltf.scene;
+                scene.add(model);
+            },
+            undefined,
+            function (error) {
+                console.error('Error al cargar el modelo:', error);
+            }
+        );
+
+        // Posición de la cámara
+        camera.position.z = 5;
+
+        // Animación
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
